@@ -24,7 +24,9 @@ object Main {
     val lang = Lang.NTRIPLES
     val triples : RDD[Triple] = spark.rdf(lang)(input)
 
-    triples.saveAsNTriplesFile(output)
+
+    println(triples.count())
+    //triples.saveAsNTriplesFile(output)
 
     spark.stop
   }
