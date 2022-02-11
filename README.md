@@ -10,3 +10,14 @@ sbt downloadSansaJar
 ``` 
 sbt test
 ```
+
+## run assembly
+
+``` 
+sbt assembly
+```
+
+## run on msd cluster
+
+``` 
+```

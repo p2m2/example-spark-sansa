@@ -28,7 +28,7 @@ lazy val root = (project in file("."))
     libraryDependencies ++=Seq(
       "org.apache.spark" %% "spark-sql" % sparkVersion % "test,provided",
       "org.apache.spark" %% "spark-core" % sparkVersion % "test,provided",
-      "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
+      "org.scalatest" %% "scalatest" % scalaTestVersion % "test,provided",
     ),
     //Compile / compile := Def.sequential(downloadSansaJar, Compile / compile ).value,
     resolvers ++= Seq(
