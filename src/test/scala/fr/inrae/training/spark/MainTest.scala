@@ -16,10 +16,9 @@ class MainTest extends AnyFlatSpec {
   }
 
   "doWriteNt" should "read nt file and write nt file" in {
-    val n3_input="./src/test/resources/animals.n3"
+    val n3_input="./src/test/resources/example.nt"
     val tp = File.createTempFile("out-", ".n3").getPath
     Main.doWriteNt(spark,n3_input,tp)
-
   }
 
 }

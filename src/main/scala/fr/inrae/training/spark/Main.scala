@@ -1,11 +1,11 @@
 package fr.inrae.training.spark
 
-
 import net.sansa_stack.rdf.spark.io._
-import org.apache.jena.riot.Lang
+import net.sansa_stack.rdf.spark.model._
 import org.apache.jena.graph.Triple
-import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SparkSession
+import org.apache.jena.riot.Lang
+import org.apache.spark.sql.{Dataset, SparkSession}
+
 object Main {
 
   def doMain(spark : SparkSession) = {
@@ -21,16 +21,11 @@ object Main {
    */
   def doWriteNt(spark : SparkSession, input: String, output : String) = {
 
-    val lang = Lang.NTRIPLES
-    val triples : RDD[Triple] = spark.rdf(lang)(input)
-
-
-    println(triples.count())
-    //triples.saveAsNTriplesFile(output)
-
-    spark.stop
+    val dataset: Dataset[Triple] = spark.read.rdf(Lang.TURTLE)(input).toDS()
+    println(dataset.count())
+    val sparqlQueryString ="SELECT ?s WHERE { ?s ?p <http://data.linkedmdb.org/movie/film> }"
+  //  val triplesRDD = dataset.rdd.sparql(sparqlQuery)
   }
-
 
   def main(args : Array[String]) =  {
     val spark = SparkSession

@@ -1,27 +1,36 @@
+import scala.concurrent.blocking
+
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
-ThisBuild / scalaVersion := "2.11.12"
-lazy val sansaVersion = "0.7.1"
+ThisBuild / scalaVersion := "2.12.15"
+
+lazy val urlSansaDistributionJar = "https://github.com/SANSA-Stack/SANSA-Stack/releases/download/v0.8.3_DistAD/DistAD_SANSA_examples.jar"
+lazy val sansaReleaseJar = "./lib/"+urlSansaDistributionJar.split("/").last
+lazy val sparkVersion = "3.0.1"
+lazy val scalaTestVersion = "3.2.11"
+
+/** Manage Sansa */
+lazy val downloadSansaJar = taskKey[Unit]("Manage Sansa Jar distribution")
+downloadSansaJar := {
+  import java.io.File
+  import java.net.URL
+  import sys.process._
+  println(" -- Manage Sansa Jar distribution -- ")
+  if (! new File(sansaReleaseJar).exists())
+    blocking((new URL(urlSansaDistributionJar) #> new File(sansaReleaseJar)).run().exitValue())
+  println(" -- " + sansaReleaseJar + " ok")
+}
 
 lazy val root = (project in file("."))
   .settings(
     name := "spark-sansa-read-turtle-example",
+    Compile / unmanagedJars +=  file(sansaReleaseJar) ,
     libraryDependencies ++=Seq(
-      "org.apache.spark" %% "spark-sql" % "2.4.8" % "test,provided",
-      "org.scalatest" %% "scalatest" % "3.2.11" % "test",
-      "org.slf4j" % "jcl-over-slf4j" % "1.7.35" % "test",
-      "io.netty" % "netty-all" % "4.1.73.Final"% "test",
-      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.13.1" % "test",
-      "com.fasterxml.jackson.core" % "jackson-databind" % "2.13.1",
-      "com.github.jsonld-java" % "jsonld-java" % "0.13.4",
-      "org.codehaus.groovy" % "groovy-all" % "3.0.9" pomOnly(),
-      "net.sansa-stack" %% "sansa-rdf-spark" % sansaVersion,
-      "net.sansa-stack" %% "sansa-owl-spark" % sansaVersion,
-    //  "net.sansa-stack" %% "sansa-inference-spark" % sansaVersion,
-      "net.sansa-stack" %% "sansa-query-spark" % sansaVersion,
-    //  "net.sansa-stack" %% "sansa-ml-spark" % sansaVersion
-
+      "org.apache.spark" %% "spark-sql" % sparkVersion % "test,provided",
+      "org.apache.spark" %% "spark-core" % sparkVersion % "test,provided",
+      "org.scalatest" %% "scalatest" % scalaTestVersion % "test",
     ),
+    //Compile / compile := Def.sequential(downloadSansaJar, Compile / compile ).value,
     resolvers ++= Seq(
       "AKSW Maven Releases" at "https://maven.aksw.org/archiva/repository/internal",
       "AKSW Maven Snapshots" at "https://maven.aksw.org/archiva/repository/snapshots",
