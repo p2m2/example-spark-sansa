@@ -20,7 +20,13 @@ class MainTest extends AnyFlatSpec {
     val tp = File.createTempFile("out-", ".n3").getPath
     Main.doWriteNt(spark,n3_input,tp)
   }
-
+/*
+  "sparqlQuery" should "" in {
+    val n3_input="./src/test/resources/example.nt"
+    val tp = File.createTempFile("out2-", ".n3").getPath
+    Main.sparqlQuery(spark,n3_input)
+  }
+*/
 }
 
 

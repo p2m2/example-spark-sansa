@@ -22,3 +22,7 @@ sbt assembly
 ``` 
 spark-submit --executor-memory 1G --num-executors 1 ../test-spark-assemblye.jar 
 ```
+
+## Sansa doc
+
+http://sansa-stack.github.io/SANSA-Stack/
