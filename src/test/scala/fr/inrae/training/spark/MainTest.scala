@@ -9,16 +9,18 @@ class MainTest extends AnyFlatSpec {
   var spark = SparkSession
     .builder()
     .master("local[*]")
+    .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+    .config("spark.kryo.registrator", "net.sansa_stack.rdf.spark.io.JenaKryoRegistrator")
     .getOrCreate()
 
   "my function doMain" should "work" in {
     Main.doMain(spark)
   }
 
-  "doWriteNt" should "read nt file and write nt file" in {
+  "doMLSansaSparqlTransformer" should "read nt file and show 5 element" in {
     val n3_input="./src/test/resources/example.nt"
     val tp = File.createTempFile("out-", ".n3").getPath
-    Main.doWriteNt(spark,n3_input,tp)
+    Main.doMLSansaSparqlTransformer(spark,n3_input,tp)
   }
 /*
   "sparqlQuery" should "" in {

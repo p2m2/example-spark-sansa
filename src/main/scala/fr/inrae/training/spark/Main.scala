@@ -6,7 +6,7 @@ import net.sansa_stack.rdf.spark.io._
 import net.sansa_stack.rdf.spark.model._
 import org.apache.jena.graph.Triple
 import org.apache.jena.riot.Lang
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 
 object Main {
 
@@ -21,7 +21,7 @@ object Main {
    * @param output the output directory
    * @return
    */
-  def doWriteNt(spark : SparkSession, input: String, output : String) = {
+  def doMLSansaSparqlTransformer(spark : SparkSession, input: String, output : String) = {
 
     val dataset: Dataset[Triple] = spark.read.rdf(Lang.TURTLE)(input).toDS()
     println(dataset.count())
@@ -29,9 +29,9 @@ object Main {
     val sparqlQueryString ="SELECT ?s WHERE { ?s ?p ?o. } limit 10"
     val sparqlQuery: SPARQLQuery = SPARQLQuery(sparqlQueryString)
     println(sparqlQuery)
-    //val res: DataFrame = sparqlQuery.transform(dataset)
-    //val resultNodes = res.collect()
-    //println(resultNodes.)
+    val res: DataFrame = sparqlQuery.transform(dataset)
+    val resultNodes = res.collect()
+    res.show(5)
   }
 /*
   def sparqlQuery(spark : SparkSession, input: String) = {

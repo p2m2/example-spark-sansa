@@ -18,6 +18,6 @@ class SPARQLExampleTest extends AnyFlatSpec {
       .master("local[*]")
       .getOrCreate()
 
-    SPARQLExample.main(spark,Array())
+   // SPARQLExample.main(spark,Array())
   }
 }
