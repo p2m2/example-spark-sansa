@@ -1,7 +1,4 @@
-import scala.concurrent.blocking
-
 ThisBuild / version := "0.1.0-SNAPSHOT"
-
 ThisBuild / scalaVersion := "2.12.15"
 
 lazy val urlSansaDistributionJar = "https://github.com/SANSA-Stack/SANSA-Stack/releases/download/v0.8.3_DistAD/DistAD_SANSA_examples.jar"
@@ -12,12 +9,15 @@ lazy val scalaTestVersion = "3.2.11"
 /** Manage Sansa */
 lazy val downloadSansaJar = taskKey[Unit]("Manage Sansa Jar distribution")
 downloadSansaJar := {
+  import scala.concurrent.blocking
   import java.io.File
   import java.net.URL
   import sys.process._
   println(" -- Manage Sansa Jar distribution -- ")
-  if (! new File(sansaReleaseJar).exists())
-    blocking((new URL(urlSansaDistributionJar) #> new File(sansaReleaseJar)).run().exitValue())
+  if (! new File("./lib").exists())  new File("./lib").mkdir()
+  if (! new File(sansaReleaseJar).exists()) {
+     blocking((new URL(urlSansaDistributionJar) #> new File(sansaReleaseJar)).run().exitValue())
+   }
   println(" -- " + sansaReleaseJar + " ok")
 }
 
