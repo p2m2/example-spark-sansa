@@ -45,6 +45,7 @@ object Main {
   }
 */
   def main(args : Array[String]) =  {
+
     val spark = SparkSession
       .builder()
       .appName("spark-training-test")

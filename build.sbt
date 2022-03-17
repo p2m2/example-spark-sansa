@@ -30,7 +30,7 @@ downloadSansaJar := {
 
 lazy val root = (project in file("."))
   .settings(
-    name := "spark-sansa-read-turtle-example",
+    name := "spark-msd-examples",
     Compile / unmanagedJars +=  file(sansaReleaseJar) ,
     libraryDependencies ++=Seq(
       "org.apache.spark" %% "spark-sql" % sparkVersion % "test,provided",
@@ -48,8 +48,11 @@ lazy val root = (project in file("."))
       Resolver.mavenLocal,
       "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository",
       "Apache Staging" at "https://repository.apache.org/content/repositories/staging/"
-    )
-
+    ),
+    assembly / assemblyMergeStrategy  := {
+      case PathList("META-INF", xs @ _*) => MergeStrategy.discard
+      case x => MergeStrategy.first
+    }
   )
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
