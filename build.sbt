@@ -1,6 +1,13 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "2.12.15"
 
+initialize := {
+  val _ = initialize.value // run the previous initialization
+  val required = 55.0
+  val current  = sys.props("java.class.version").toFloat
+  assert( current >= required, s"Unsupported JDK: java.specification.version $current < $required")
+}
+
 lazy val urlSansaDistributionJar = "https://github.com/SANSA-Stack/SANSA-Stack/releases/download/v0.8.3_DistAD/DistAD_SANSA_examples.jar"
 lazy val sansaReleaseJar = "./lib/"+urlSansaDistributionJar.split("/").last
 lazy val sparkVersion = "3.0.1"
